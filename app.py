@@ -2,14 +2,21 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import textdistance
+import chardet
 from textblob import TextBlob
 import re
 from collections import Counter
 
 # Load the Swahili dataset
 def load_swahili_dataset():
-    with open('swahili.txt', 'r') as f:
+    with open('swahili.txt', 'rb') as f:
+        raw_data = f.read()
+        result = chardet.detect(raw_data)
+        encoding = result['encoding']
+        
+    with open('swahili.txt', 'r', encoding=encoding) as f:
         file_name_data = f.read().lower()
+    
     words = re.findall(r'\w+', file_name_data)
     return words
 
